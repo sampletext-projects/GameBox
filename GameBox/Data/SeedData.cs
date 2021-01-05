@@ -44,6 +44,28 @@ namespace GameBox.Data
                 // Look for any movies.
                 if (context.Games.Any()) return; // DB has been seeded
 
+                context.Games.Add(new Game()
+                {
+                    Title = "Cyberpunk 2077",
+                    Genre = Genre.FPS | Genre.ThreeD,
+                    ImgUrl = "https://i.playground.ru/e/Ryrrx206WNZbVZv6yow2JQ.jpeg",
+                    ReleaseDate = DateTime.Today
+                });
+                context.Games.Add(new Game()
+                {
+                    Title = "The Witcher 3: Wild Hunt",
+                    Genre = Genre.ThreeD,
+                    ImgUrl = "https://i.playground.ru/e/9thR9kr-oEyBmZSODTny6w.jpeg",
+                    ReleaseDate = DateTime.Today
+                });
+                context.Games.Add(new Game()
+                {
+                    Title = "Red Dead Redemption 2",
+                    Genre = Genre.ThreeD | Genre.Adventure,
+                    ImgUrl = "https://i.playground.ru/e/VCWcLDopPY6j_abJ82vryg.jpeg",
+                    ReleaseDate = DateTime.Today
+                });
+
                 context.SaveChanges();
             }
         }

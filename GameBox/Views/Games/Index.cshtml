@@ -142,6 +142,16 @@
         border-radius: 100%;
         margin: 0 auto 5px;
     }
+
+    .info .title {
+        margin: 14px 0 0 0;
+        font: bold 2rem/1 "Roboto Condensed", "Arial Narrow", Arial, Helvetica, sans-serif;
+    }
+
+    a {
+        color: #333;
+        text-decoration: none;
+    }
 </style>
 
 <h1>All Games</h1>
@@ -187,8 +197,15 @@
                 <div class="gp-game-cover">
                     <a asp-controller="Games" asp-action="Details" asp-route-id="@item.Id">
                         <picture>
-                            <source srcset="https://i.playground.ru/e/Ryrrx206WNZbVZv6yow2JQ.jpeg.webp?140x194" type="image/webp">
-                            <img width="140" height="194" class="media-object" alt="Cyberpunk 2077" src="https://i.playground.ru/e/Ryrrx206WNZbVZv6yow2JQ.jpeg?140x194" loading="lazy">
+                            @{
+                                var imgExt = item.ImgUrl.Substring(item.ImgUrl.LastIndexOf('.'));
+                                if (imgExt.Contains('?'))
+                                {
+                                    imgExt = imgExt.Split('?')[0];
+                                }
+                            }
+                            <source srcset="@item.ImgUrl" type="image/@imgExt">
+                            <img width="140" height="194" class="media-object" alt="Cyberpunk 2077" src="@item.ImgUrl" loading="lazy">
                         </picture>
                     </a>
                 </div>
