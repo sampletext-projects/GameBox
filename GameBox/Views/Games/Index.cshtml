@@ -1,48 +1,208 @@
-﻿@model IEnumerable<GameBox.Models.Game>
+﻿@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<GameBox.Models.Game>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<style type="text/css">
+    .item {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        display: flex;
+        margin: 0 0 14px 0;
+        position: relative;
+        background-color: #fff;
+        padding: 10px;
+        box-shadow: 0 0 1px rgba(0,0,0,0.2);
+    }
+
+    .gp-game-cover {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        position: relative;
+        flex-shrink: 0;
+        margin-right: 20px;
+    }
+
+    .info {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .media-heading {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin: 14px 0 0 0;
+        font: bold 2rem/1 "Roboto Condensed", "Arial Narrow", Arial, Helvetica, sans-serif;
+    }
+
+    .text-muted {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        color: #777;
+    }
+
+    .meta-info {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin: 14px 0 0 0;
+        font: normal 1.3rem/1.2 "Roboto Condensed", "Arial Narrow", Arial, Helvetica, sans-serif;
+    }
+
+    .footer {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin-top: auto;
+    }
+
+    .game-rating-points {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .game-rating-item {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin: 10px 0 0 5px;
+        text-align: center;
+        font: normal 1.1rem/1 "Roboto Condensed", "Arial Narrow", Arial, Helvetica, sans-serif;
+        color: #b0b0b0;
+    }
+
+    .editorial .value {
+        color: var(--main-color);
+        border-color: var(--main-color);
+    }
+
+    .readers .value {
+        color: #337ab7;
+        border-color: #337ab7;
+    }
+
+    .game-rating-points .value {
+        font: bold 1.4rem/1 Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 100%;
+        margin: 0 auto 5px;
+    }
+</style>
+
+<h1>All Games</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @{
+        var user = UserManager.GetUserAsync(User).Result;
+    }
+    @if (user != null)
+    {
+        if (UserManager.GetRolesAsync(user).Result.Contains("Admin"))
+        {
+            <a asp-action="Create">Create New</a>
+        }
+    }
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genre)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <div class="item">
+                <div class="info">
+                    <div>
+                        <div class="media-heading title">
+                            <a asp-controller="Games" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                        </div>
+                        <div class="text-muted"></div>
+                        <div class="meta-info">
+                            <div>
+                                <span class="text-muted">Дата выхода:</span> @item.ReleaseDate.ToString("dd.MM.yyyy")
+                            </div>
+                            <div>
+                                @*<span class="text-muted">Жанры:</span>&nbsp;
+                                    <a href="/games/action">Экшен</a>,
+                                    <a href="/games/rpg">Ролевая</a>,
+                                    <a href="/games/first-person">От первого лица</a>,
+                                    <a href="/games/open_world">Открытый мир</a>,
+                                    <a href="/games/cyberpunk">Киберпанк</a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gp-game-cover">
+                    <a asp-controller="Games" asp-action="Details" asp-route-id="@item.Id">
+                        <picture>
+                            <source srcset="https://i.playground.ru/e/Ryrrx206WNZbVZv6yow2JQ.jpeg.webp?140x194" type="image/webp">
+                            <img width="140" height="194" class="media-object" alt="Cyberpunk 2077" src="https://i.playground.ru/e/Ryrrx206WNZbVZv6yow2JQ.jpeg?140x194" loading="lazy">
+                        </picture>
+                    </a>
+                </div>
+                <div class="game-rating-points">
+                    <div class="editorial game-rating-item">
+                        <span class="value">6</span>
+                        <div>редакция</div>
+                    </div>
+                    <div class="readers game-rating-item">
+                        <span class="value">8.6</span>
+                        <div>пользователи<br>(3431)</div>
+                    </div>
+                </div>
+            </div>
+        }
     </tbody>
 </table>
