@@ -27,7 +27,7 @@ namespace GameBox
         }
 
         public IConfiguration Configuration { get; }
-        public string WWWRootPath { get; set; }
+        public static string WWWRootPath { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
 
