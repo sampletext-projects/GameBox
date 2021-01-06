@@ -25,5 +25,7 @@ namespace GameBox.Data
         }
 
         public DbSet<Game> Games { get; set; }
+
+        public DbSet<GameBox.Models.Article> Article { get; set; }
     }
 }

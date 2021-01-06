@@ -1,0 +1,107 @@
+﻿@model GameBox.Models.Article
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .left {
+        width: 50%;
+        height: 600px;
+        display: inline-block;
+        margin-right: 1em;
+    }
+
+    .right {
+        width: 50%;
+        height: 600px;
+        display: inline-block;
+    }
+
+    .left-right-block {
+        display: flex;
+        height: 600px;
+        width: 100%;
+    }
+
+    #right-viewport {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #AAAAAA;
+    }
+
+    textarea {
+        height: 300px;
+        width: 100%;
+    }
+
+    form { width: 100%; }
+</style>
+
+<script type="text/javascript">
+    function on_textarea_changed() {
+        document.getElementById("right-viewport").innerHTML = document.getElementById("HtmlContent").value;
+    }
+
+</script>
+
+<h1>Create</h1>
+
+<h4>Article</h4>
+@*<a target="_blank" rel="noopener noreferrer" asp-controller="Img" asp-action="Upload">Upload Images</a>*@
+<hr/>
+<div class="row">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="left-right-block">
+            <div class="left">
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control"/>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HtmlContent" class="control-label"></label>
+                    <textarea asp-for="HtmlContent" class="form-control" oninput="on_textarea_changed()"></textarea>
+                    <span asp-validation-for="HtmlContent" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ShortDescription" class="control-label"></label>
+                    <textarea asp-for="ShortDescription" class="form-control"></textarea>
+                    <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="right">
+                <label class="control-label">Preview</label>
+                <div id="right-viewport">
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @{
+                var user = UserManager.GetUserAsync(User).Result;
+            }
+            @if (user != null)
+            {
+                <label asp-for="Creator" class="control-label"></label>
+                <input type="hidden" asp-for="CreatorId" value="@user.Id"/>
+                <input class="form-control" value="@user.UserName" disabled/>
+            }
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary"/>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

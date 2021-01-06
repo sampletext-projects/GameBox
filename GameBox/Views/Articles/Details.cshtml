@@ -1,0 +1,26 @@
+﻿@model GameBox.Models.Article
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    @Html.Raw(Model.HtmlContent)
+</div>
+<div>
+    @{
+        var user = UserManager.GetUserAsync(User).Result;
+    }
+    @if (user != null && (user.Id == Model.CreatorId || UserManager.GetRolesAsync(user).Result.Contains("Admin")))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> @:|
+    }
+    <a asp-action="Index">Back to List</a>
+</div>

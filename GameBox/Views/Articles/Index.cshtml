@@ -1,0 +1,62 @@
+﻿@model IEnumerable<GameBox.Models.Article>
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    @{
+        var user = UserManager.GetUserAsync(User).Result;
+    }
+    @if (user != null)
+    {
+        <a asp-action="Create">Create New</a>
+    }
+</p>
+
+<style type="text/css">
+    .article-list {
+        list-style: none;
+        margin: 0;
+    }
+
+    .article-list-item {
+        clear: both;
+        margin-bottom: 36px;
+        position: relative;
+    }
+
+    .article-title {
+        font-weight: 400;
+        line-height: 1.3;
+    }
+
+    .description {
+        clear: both;
+        margin-bottom: 36px;
+        position: relative;
+        max-width: 100%;
+        font-weight: 100;
+        box-sizing: border-box;
+    }
+</style>
+
+<ul class="article-list">
+    @foreach (var article in Model)
+    {
+        <li class="article-list-item">
+            <a asp-controller="Articles" asp-action="Details" asp-route-id="@article.Id" style="text-decoration: none; color:black">
+                <div style="border:1px solid #AAAAAA">
+                    <p class="article-title" style="font-size: 18pt; margin:0"><b>@article.Title</b></p>
+                    <p class="article-title" style="font-size: 10pt; margin:0">@article.Creator.UserName</p>
+                    <p class="description">@article.ShortDescription</p>
+                </div>
+            </a>
+        </li>
+    }
+</ul>
