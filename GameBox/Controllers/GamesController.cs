@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameBox.Data;
 using GameBox.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameBox.Controllers
 {
@@ -14,11 +15,16 @@ namespace GameBox.Controllers
     [Controller]
     public class GamesController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly GameDbContext _context;
 
-        public GamesController(GameDbContext context)
+        public GamesController(GameDbContext context, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: Games
@@ -51,6 +57,12 @@ namespace GameBox.Controllers
         [HttpGet(nameof(Create))]
         public IActionResult Create()
         {
+            var user = _userManager.GetUserAsync(User).Result;
+            if (user == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             ViewData["Genres"] = Enum.GetNames(typeof(Genre)).Select(t => new SelectListItem(t, t));
             return View();
         }
@@ -60,7 +72,7 @@ namespace GameBox.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost(nameof(Create))]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre")] Game game)
+        public async Task<IActionResult> Create(Game game)
         {
             if (ModelState.IsValid)
             {
@@ -68,6 +80,7 @@ namespace GameBox.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(game);
         }
 
@@ -95,7 +108,7 @@ namespace GameBox.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost(nameof(Edit))]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre")] Game game)
+        public async Task<IActionResult> Edit(int id, Game game)
         {
             if (id != game.Id)
             {

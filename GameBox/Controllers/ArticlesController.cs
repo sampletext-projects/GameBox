@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameBox.Data;
 using GameBox.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameBox.Controllers
 {
     public class ArticlesController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly GameDbContext _context;
 
-        public ArticlesController(GameDbContext context)
+        public ArticlesController(GameDbContext context, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: Articles
@@ -48,6 +54,12 @@ namespace GameBox.Controllers
         // GET: Articles/Create
         public IActionResult Create()
         {
+            var user = _userManager.GetUserAsync(User).Result;
+            if (user == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             ViewBag.GameId = new SelectList(_context.Games, "Id", "Title");
             return View();
         }
@@ -57,7 +69,7 @@ namespace GameBox.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,HtmlContent,ShortDescription,Title,CreatorId,GameId")] Article article)
+        public async Task<IActionResult> Create(Article article)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +77,7 @@ namespace GameBox.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewBag.GameId = new SelectList(_context.Games, "Id", "Title");
             return View(article);
         }
@@ -82,6 +95,7 @@ namespace GameBox.Controllers
             {
                 return NotFound();
             }
+
             ViewData["CreatorId"] = new SelectList(_context.Users, "Id", "Id", article.CreatorId);
             return View(article);
         }
@@ -91,7 +105,7 @@ namespace GameBox.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,HtmlContent,ShortDescription,Title,CreatorId,GameId")] Article article)
+        public async Task<IActionResult> Edit(int id, Article article)
         {
             if (id != article.Id)
             {
@@ -116,8 +130,10 @@ namespace GameBox.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CreatorId"] = new SelectList(_context.Users, "Id", "Id", article.CreatorId);
             return View(article);
         }
