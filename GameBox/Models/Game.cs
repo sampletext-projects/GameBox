@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GameBox.Models
@@ -16,6 +17,8 @@ namespace GameBox.Models
         public Genre Genre { get; set; }
 
         public string ImgUrl { get; set; }
+
+        public virtual ICollection<Article> Articles{ get; set; }
 
         public Game()
         {

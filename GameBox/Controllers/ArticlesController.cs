@@ -22,7 +22,7 @@ namespace GameBox.Controllers
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-            var gameDbContext = _context.Article.Include(a => a.Creator);
+            var gameDbContext = _context.Article.Include(a => a.Creator).Include(a => a.Game);
             return View(await gameDbContext.ToListAsync());
         }
 
@@ -48,7 +48,7 @@ namespace GameBox.Controllers
         // GET: Articles/Create
         public IActionResult Create()
         {
-            ViewData["CreatorId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewBag.GameId = new SelectList(_context.Games, "Id", "Title");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace GameBox.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,HtmlContent,ShortDescription,Title,CreatorId")] Article article)
+        public async Task<IActionResult> Create([Bind("Id,HtmlContent,ShortDescription,Title,CreatorId,GameId")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace GameBox.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CreatorId"] = new SelectList(_context.Users, "Id", "Id", article.CreatorId);
+            ViewBag.GameId = new SelectList(_context.Games, "Id", "Title");
             return View(article);
         }
 
@@ -91,7 +91,7 @@ namespace GameBox.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,HtmlContent,ShortDescription,Title,CreatorId")] Article article)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,HtmlContent,ShortDescription,Title,CreatorId,GameId")] Article article)
         {
             if (id != article.Id)
             {

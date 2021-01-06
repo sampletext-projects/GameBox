@@ -41,7 +41,7 @@
     {
         if (UserManager.GetRolesAsync(user).Result.Contains("Admin"))
         {
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <text>|</text>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> @:|
         }
     }
     <a asp-action="Index">Back</a>

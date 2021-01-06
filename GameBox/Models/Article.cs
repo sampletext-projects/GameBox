@@ -16,5 +16,10 @@ namespace GameBox.Models
         public string CreatorId { get; set; }
 
         public virtual ApplicationUser Creator { get; set; }
+
+        [ForeignKey(nameof(Game))]
+        public int GameId { get; set; }
+
+        public virtual Game Game { get; set; }
     }
 }
