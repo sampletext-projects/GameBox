@@ -6,12 +6,44 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    var user = UserManager.GetUserAsync(User).Result;
+}
 
-<h1>Details</h1>
+<script type="text/javascript">
+    window.onload = function() {
+        document.getElementById("comment_form").addEventListener('submit',
+            function (event) {
+                event.preventDefault();
+                form_submit();
+            });
+    }
+
+    function form_submit() {
+        const formData = new FormData(document.getElementById("comment_form"));
+
+        const url = '/api/comments/create';
+        const method = "POST";
+        const body = formData;
+
+        fetch(url, { method, body })
+            .then(response => response.text())
+            .then(
+                (result) => {
+                    location.reload();
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
+    }
+</script>
+
+<h1>Game Details</h1>
 
 <div>
     <h4>Game</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -32,16 +64,56 @@
             @Html.DisplayFor(model => model.Genre)
         </dd>
     </dl>
+
+    <p>Comments</p>
+    <hr/>
+
+    <ul style="list-style: none">
+        @foreach (var comment in Model.Comments)
+        {
+            <li style="border: 1px solid #AAAAAA; display: block">
+                <p>@comment.User.UserName</p>
+                <p>@comment.Content</p>
+                <p>@comment.Mark</p>
+            </li>
+        }
+    </ul>
+
+    @if (user != null)
+    {
+        <form id="comment_form">
+            <input type="hidden" name="GameId" value="@Model.Id"/>
+
+            <div class="form-group">
+                <label class="control-label">Username</label>
+                <input type="hidden" name="UserId" value="@user.Id"/>
+                <input class="form-control" value="@user.UserName" disabled/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Content</label>
+                <textarea name="Content" class="form-control"></textarea>
+                <span class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Mark</label>
+                <input type="number" min="1" max="5" name="Mark" class="form-control"/>
+                <span class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    }
 </div>
 <div>
-    @{
-        var user = UserManager.GetUserAsync(User).Result;
-    }
     @if (user != null)
     {
         if (UserManager.GetRolesAsync(user).Result.Contains("Admin"))
         {
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> @:|
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            @:|
         }
     }
     <a asp-action="Index">Back</a>

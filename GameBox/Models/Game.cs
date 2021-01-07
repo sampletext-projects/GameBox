@@ -18,10 +18,8 @@ namespace GameBox.Models
 
         public string ImgUrl { get; set; }
 
-        public virtual ICollection<Article> Articles{ get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
 
-        public Game()
-        {
-        }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
