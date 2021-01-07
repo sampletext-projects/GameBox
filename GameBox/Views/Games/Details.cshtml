@@ -13,7 +13,7 @@
 <script type="text/javascript">
     window.onload = function() {
         document.getElementById("comment_form").addEventListener('submit',
-            function (event) {
+            function(event) {
                 event.preventDefault();
                 form_submit();
             });
@@ -41,7 +41,7 @@
 
 <style type="text/css">
     .item {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         color: #333;
         font-size: 1.2rem;
@@ -53,11 +53,11 @@
         position: relative;
         background-color: #fff;
         padding: 10px;
-        box-shadow: 0 0 1px rgba(0,0,0,0.2);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
     }
 
     .gp-game-cover {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         color: #333;
         font-size: 1.2rem;
@@ -70,7 +70,7 @@
     }
 
     .info {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         color: #333;
         font-size: 1.2rem;
@@ -84,7 +84,7 @@
     }
 
     .media-heading {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         color: #333;
         cursor: default;
@@ -93,7 +93,7 @@
     }
 
     .text-muted {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         font-size: 1.2rem;
         line-height: 1.5;
@@ -103,7 +103,7 @@
     }
 
     .meta-info {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         color: #333;
         cursor: default;
@@ -112,7 +112,7 @@
     }
 
     .footer {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         color: #333;
         font-size: 1.2rem;
@@ -124,7 +124,7 @@
     }
 
     .game-rating-points {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b31919;
         color: #333;
         font-size: 1.2rem;
@@ -136,7 +136,7 @@
     }
 
     .game-rating-item {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         --main-color: #b0b0b0;
         cursor: default;
         -webkit-box-sizing: border-box;
@@ -166,9 +166,7 @@
         margin: 0 auto 5px;
     }
 
-    .info .title {
-        margin: 14px 0 0 0;
-    }
+    .info .title { margin: 14px 0 0 0; }
 
     a {
         color: #333;
@@ -179,15 +177,9 @@
 <h1>Game Details</h1>
 
 <div>
-    <h4>Game</h4>
-    <hr />
+    <h4>@Model.Title</h4>
+    <hr/>
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
@@ -200,10 +192,23 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Genre)
         </dd>
+        <dt class="col-sm-2">
+            Average mark
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Comments.Any())
+            {
+                @Model.Comments.Average(c => c.Mark).ToString("F2")
+            }
+            else
+            {
+                @: No marks
+            }
+        </dd>
     </dl>
 
     <p>Comments</p>
-    <hr />
+    <hr/>
 
     <ul style="list-style: none">
         @foreach (var comment in Model.Comments)
@@ -212,7 +217,9 @@
                 <div class="info">
                     <div>
                         <div class="media-heading title">
-                            <p><b>@comment.User.UserName</b></p>
+                            <p>
+                                <b>@comment.User.UserName</b>
+                            </p>
                         </div>
                         <div class="text-muted"></div>
                         <div class="meta-info">
@@ -224,7 +231,9 @@
                 </div>
                 <div class="game-rating-points">
                     <div class="editorial game-rating-item">
-                        <span class="value"><b>@comment.Mark</b></span>
+                        <span class="value">
+                            <b>@comment.Mark</b>
+                        </span>
                         <div>Оценка</div>
                     </div>
                 </div>
@@ -232,20 +241,16 @@
         }
     </ul>
 
-    <hr />
+    <hr/>
     <p>New Comment</p>
-    <hr />
+    <hr/>
 
     @if (user != null)
     {
         <form id="comment_form">
-            <input type="hidden" name="GameId" value="@Model.Id" />
-
-            <div class="form-group">
-                <label class="control-label">Username</label>
-                <input type="hidden" name="UserId" value="@user.Id" />
-                <input class="form-control" value="@user.UserName" disabled />
-            </div>
+            <input type="hidden" name="GameId" value="@Model.Id"/>
+            <input type="hidden" name="UserId" value="@user.Id"/>
+            
             <div class="form-group">
                 <label class="control-label">Content</label>
                 <textarea name="Content" class="form-control"></textarea>
@@ -254,12 +259,12 @@
 
             <div class="form-group">
                 <label class="control-label">Mark</label>
-                <input type="number" min="1" max="5" name="Mark" class="form-control" />
+                <input type="number" min="1" max="5" name="Mark" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add Comment" class="btn btn-primary"/>
             </div>
         </form>
     }
