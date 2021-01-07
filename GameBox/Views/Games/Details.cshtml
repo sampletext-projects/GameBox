@@ -39,11 +39,148 @@
     }
 </script>
 
+<style type="text/css">
+    .item {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        display: flex;
+        margin: 0 0 14px 0;
+        position: relative;
+        background-color: #fff;
+        padding: 10px;
+        box-shadow: 0 0 1px rgba(0,0,0,0.2);
+    }
+
+    .gp-game-cover {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        position: relative;
+        flex-shrink: 0;
+        margin-right: 20px;
+    }
+
+    .info {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .media-heading {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin: 14px 0 0 0;
+    }
+
+    .text-muted {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        color: #777;
+    }
+
+    .meta-info {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin: 14px 0 0 0;
+    }
+
+    .footer {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin-top: auto;
+    }
+
+    .game-rating-points {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b31919;
+        color: #333;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .game-rating-item {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        --main-color: #b0b0b0;
+        cursor: default;
+        -webkit-box-sizing: border-box;
+        margin: 10px 0 0 5px;
+        text-align: center;
+        color: #b0b0b0;
+    }
+
+    .editorial .value {
+        color: var(--main-color);
+        border-color: var(--main-color);
+    }
+
+    .readers .value {
+        color: #337ab7;
+        border-color: #337ab7;
+    }
+
+    .game-rating-points .value {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 100%;
+        margin: 0 auto 5px;
+    }
+
+    .info .title {
+        margin: 14px 0 0 0;
+    }
+
+    a {
+        color: #333;
+        text-decoration: none;
+    }
+</style>
+
 <h1>Game Details</h1>
 
 <div>
     <h4>Game</h4>
-    <hr/>
+    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -66,28 +203,48 @@
     </dl>
 
     <p>Comments</p>
-    <hr/>
+    <hr />
 
     <ul style="list-style: none">
         @foreach (var comment in Model.Comments)
         {
-            <li style="border: 1px solid #AAAAAA; display: block">
-                <p>@comment.User.UserName</p>
-                <p>@comment.Content</p>
-                <p>@comment.Mark</p>
-            </li>
+            <div class="item">
+                <div class="info">
+                    <div>
+                        <div class="media-heading title">
+                            <p><b>@comment.User.UserName</b></p>
+                        </div>
+                        <div class="text-muted"></div>
+                        <div class="meta-info">
+                            <div>
+                                <span class="text-muted">@comment.Content</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-rating-points">
+                    <div class="editorial game-rating-item">
+                        <span class="value"><b>@comment.Mark</b></span>
+                        <div>Оценка</div>
+                    </div>
+                </div>
+            </div>
         }
     </ul>
+
+    <hr />
+    <p>New Comment</p>
+    <hr />
 
     @if (user != null)
     {
         <form id="comment_form">
-            <input type="hidden" name="GameId" value="@Model.Id"/>
+            <input type="hidden" name="GameId" value="@Model.Id" />
 
             <div class="form-group">
                 <label class="control-label">Username</label>
-                <input type="hidden" name="UserId" value="@user.Id"/>
-                <input class="form-control" value="@user.UserName" disabled/>
+                <input type="hidden" name="UserId" value="@user.Id" />
+                <input class="form-control" value="@user.UserName" disabled />
             </div>
             <div class="form-group">
                 <label class="control-label">Content</label>
@@ -97,12 +254,12 @@
 
             <div class="form-group">
                 <label class="control-label">Mark</label>
-                <input type="number" min="1" max="5" name="Mark" class="form-control"/>
+                <input type="number" min="1" max="5" name="Mark" class="form-control" />
                 <span class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     }
