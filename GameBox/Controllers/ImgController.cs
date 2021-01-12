@@ -25,6 +25,14 @@ namespace GameBox.Controllers
                 ms.Seek(0, SeekOrigin.Begin);
                 var guid = Guid.NewGuid();
                 var filename = guid + file.FileName.Substring(file.FileName.LastIndexOf('.'));
+                var fullDirName = Path.Combine(Startup.WWWRootPath, "images");
+
+                if (!Directory.Exists(fullDirName))
+                {
+                    Directory.CreateDirectory(fullDirName);
+
+                }
+               
                 FileStream fs =
                     new FileStream(
                         Path.Combine(

@@ -23,7 +23,7 @@ namespace GameBox.Data
                     "Server=(localdb)\\MSSQLLocalDB;Database=GameBox;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
-
+        //  представляет коллекцию всех сущностей указанного типа, которые содержатся в контексте или могут быть запрошены из базы данных.
         public DbSet<Game> Games { get; set; }
 
         public DbSet<GameBox.Models.Article> Article { get; set; }

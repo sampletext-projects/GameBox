@@ -96,7 +96,7 @@ namespace MoviesApp.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return Redirect(returnUrl);
+            return Redirect("/Manage/Index");
         }
 
         [HttpGet]

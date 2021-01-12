@@ -28,7 +28,7 @@ namespace GameBox.Controllers
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-            var gameDbContext = _context.Article.Include(a => a.Creator).Include(a => a.Game);
+            var gameDbContext = _context.Article.Include(a => a.Creator).Include(a => a.Game); // подгружаем данные
             return View(await gameDbContext.ToListAsync());
         }
 

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GameBox.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]")] // определяем маршруты на котором будут выполняться методы
     [Controller]
     public class GamesController : Controller
     {
