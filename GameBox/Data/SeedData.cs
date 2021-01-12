@@ -11,14 +11,15 @@ namespace GameBox.Data
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new GameDbContext(serviceProvider.GetRequiredService<DbContextOptions<GameDbContext>>()))
+            using (var context =
+                new GameDbContext(serviceProvider.GetRequiredService<DbContextOptions<GameDbContext>>()))
             {
                 var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
                 var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
 
                 if (!roleManager.RoleExistsAsync("Admin").Result)
                 {
-                    roleManager.CreateAsync(new IdentityRole { Name = "Admin" }).Wait();
+                    roleManager.CreateAsync(new IdentityRole {Name = "Admin"}).Wait();
                 }
 
                 if (userManager.FindByEmailAsync("admin@example.com").Result == null)

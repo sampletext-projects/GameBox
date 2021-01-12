@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameBox.Controllers
 {
@@ -30,9 +26,8 @@ namespace GameBox.Controllers
                 if (!Directory.Exists(fullDirName))
                 {
                     Directory.CreateDirectory(fullDirName);
-
                 }
-               
+
                 FileStream fs =
                     new FileStream(
                         Path.Combine(
