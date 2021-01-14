@@ -31,5 +31,25 @@ namespace GameBox.Controllers
 
             return new BadRequestResult();
         }
+
+        [HttpPost(nameof(Delete))]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var comment = _context.Comment.Find(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(comment);
+            _context.SaveChanges();
+
+            return Ok("Removed");
+        }
     }
 }

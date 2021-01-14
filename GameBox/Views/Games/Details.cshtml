@@ -13,11 +13,11 @@
         document.getElementById("comment_form").addEventListener('submit',
             function(event) {
                 event.preventDefault();
-                form_submit();
+                comment_submit();
             });
     }
 
-    function form_submit() {
+    function comment_submit() {
         const formData = new FormData(document.getElementById("comment_form"));
 
         const url = '/api/comments/create';
@@ -25,6 +25,22 @@
         const body = formData;
 
         fetch(url, { method, body })
+            .then(response => response.text())
+            .then(
+                (result) => {
+                    location.reload();
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
+    }
+
+    function comment_remove(id) {
+        const url = '/api/comments/delete?id=' + id;
+        const method = "POST";
+
+        fetch(url, { method })
             .then(response => response.text())
             .then(
                 (result) => {
@@ -356,7 +372,9 @@
         </ul>
     }
 
-    <p><b>Comments</b></p>
+    <p>
+        <b>Comments</b>
+    </p>
     <hr/>
 
     <ul style="list-style: none">
@@ -388,8 +406,7 @@
                         {
                             if (UserManager.GetRolesAsync(user).Result.Contains("Admin"))
                             {
-                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-                                @:|
+                                <a onclick="comment_remove(@comment.Id)" class="btn btn-danger">Delete</a>
                             }
                         }
                     </div>
