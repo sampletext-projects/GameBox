@@ -44,6 +44,7 @@ namespace GameBox.Controllers
 
             var game = await _context.Games
                 .Include(g => g.Comments).ThenInclude(c => c.User)
+                .Include(g => g.Articles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {
