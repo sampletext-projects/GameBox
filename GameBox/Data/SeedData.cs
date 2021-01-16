@@ -49,6 +49,7 @@ namespace GameBox.Data
                 {
                     Title = "Cyberpunk 2077",
                     Genre = Genre.FPS | Genre.ThreeD,
+                    Description = "SOME LONG LONG DESCRIPTION",
                     ImgUrl = "https://i.playground.ru/e/Ryrrx206WNZbVZv6yow2JQ.jpeg",
                     ReleaseDate = DateTime.Today
                 });
@@ -56,6 +57,7 @@ namespace GameBox.Data
                 {
                     Title = "The Witcher 3: Wild Hunt",
                     Genre = Genre.ThreeD,
+                    Description = "SOME LONG LONG DESCRIPTION",
                     ImgUrl = "https://i.playground.ru/e/9thR9kr-oEyBmZSODTny6w.jpeg",
                     ReleaseDate = DateTime.Today
                 });
@@ -63,6 +65,7 @@ namespace GameBox.Data
                 {
                     Title = "Red Dead Redemption 2",
                     Genre = Genre.ThreeD | Genre.Adventure,
+                    Description = "SOME LONG LONG DESCRIPTION",
                     ImgUrl = "https://i.playground.ru/e/VCWcLDopPY6j_abJ82vryg.jpeg",
                     ReleaseDate = DateTime.Today
                 });

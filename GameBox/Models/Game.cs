@@ -11,6 +11,8 @@ namespace GameBox.Models
 
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
 
